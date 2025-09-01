@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm } from 'react-hook-form';
@@ -131,6 +132,11 @@ export default function LoginScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <View style={{ marginBottom: 48 }}>
+            <Image
+              source={require('../../assets/logo.png')}
+              style={{ width: 96, height: 96, alignSelf: 'center', marginBottom: 16 }}
+              resizeMode="contain"
+            />
             <Text style={{
               fontSize: 32,
               fontWeight: 'bold',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, ImageBackground } from 'react-native';
 import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,21 +9,29 @@ export default function HomeScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
       <ScrollView contentContainerStyle={{ padding: 20 }}>
         <View style={{ marginBottom: 24 }}>
-          <Text style={{
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: '#111827',
-            marginBottom: 8,
-          }}>
-            Chào mừng bạn đến với Phòng khám
-          </Text>
-          <Text style={{
-            fontSize: 16,
-            color: '#6b7280',
-            lineHeight: 24,
-          }}>
-            Quản lý lịch hẹn, hồ sơ y tế và hoá đơn của bạn một cách dễ dàng.
-          </Text>
+          <ImageBackground
+            source={require('../../assets/banner.png')}
+            style={{ height: 160, borderRadius: 12, overflow: 'hidden', justifyContent: 'flex-end' }}
+            resizeMode="cover"
+          >
+            <View style={{ backgroundColor: 'rgba(0,0,0,0.35)', padding: 12 }}>
+              <Text style={{
+                fontSize: 20,
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: 4,
+              }}>
+                Chào mừng bạn đến với Phòng khám
+              </Text>
+              <Text style={{
+                fontSize: 14,
+                color: '#e5e7eb',
+                lineHeight: 20,
+              }}>
+                Quản lý lịch hẹn, hồ sơ y tế và hoá đơn của bạn một cách dễ dàng.
+              </Text>
+            </View>
+          </ImageBackground>
         </View>
 
         <View style={{

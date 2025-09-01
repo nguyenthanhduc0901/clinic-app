@@ -19,7 +19,7 @@ export async function listMyInvoices(params: ListInvoicesParams = {}): Promise<L
   if (params.status) searchParams.append('status', params.status);
   if (params.date) searchParams.append('date', params.date);
 
-  const queryString = searchParams.toString();
+  const queryString = searchParams.toString();  
   const url = `/me/invoices${queryString ? `?${queryString}` : ''}`;
   
   console.log('API: listMyInvoices - URL:', url);

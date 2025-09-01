@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ViewStyle } from 'react-native';
+import { View, Text, ViewStyle, Image } from 'react-native';
 
 interface EmptyStateProps {
   title?: string;
@@ -23,10 +23,16 @@ export function EmptyState({
       alignItems: 'center',
       padding: 20,
     }, style]}>
-      {icon && (
+      {icon ? (
         <View style={{ marginBottom: 16 }}>
           {icon}
         </View>
+      ) : (
+        <Image
+          source={require('../../assets/banner.png')}
+          style={{ width: 200, height: 120, marginBottom: 16 }}
+          resizeMode="contain"
+        />
       )}
       
       <Text style={{
