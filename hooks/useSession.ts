@@ -11,10 +11,14 @@ export function useSession() {
   const checkAuthStatus = async () => {
     try {
       const token = await getToken();
-      setIsAuthenticated(!!token);
+      const isAuth = !!token;
+
+      setIsAuthenticated(isAuth);
+      return isAuth;
     } catch (error) {
       console.error('Error checking auth status:', error);
       setIsAuthenticated(false);
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -36,7 +40,7 @@ export function useSession() {
     // Delay auth check slightly to avoid SSR/hydration issues
     const timer = setTimeout(() => {
       checkAuthStatus();
-    }, 100);
+    }, 200); // Increased delay
     return () => clearTimeout(timer);
   }, []);
 

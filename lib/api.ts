@@ -41,6 +41,16 @@ api.interceptors.request.use(
     const token = await getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      // Log for PDF export requests
+      if (config.url?.includes('export.pdf')) {
+        console.log('API Interceptor: Adding token to PDF request');
+        console.log('API Interceptor: Token exists:', !!token);
+        console.log('API Interceptor: Token length:', token.length);
+        console.log('API Interceptor: Request URL:', config.url);
+        console.log('API Interceptor: Request headers:', config.headers);
+      }
+    } else if (config.url?.includes('export.pdf')) {
+      console.warn('API Interceptor: No token found for PDF request!');
     }
     return config;
   },
@@ -55,10 +65,13 @@ api.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    // Handle 401 - clear token and redirect to login
+    // Handle 401 - clear token and redirect to login (unless suppressed for exploratory calls)
     if (error.response?.status === 401) {
-      await clearToken();
-      router.replace('/(auth)/login');
+      const suppress = (error.config as any)?.headers?.['X-Suppress-401-Logout'] === '1';
+      if (!suppress) {
+        await clearToken();
+        router.replace('/(auth)/login');
+      }
     }
 
     // Normalize error response format
@@ -103,19 +116,18 @@ export interface LoginRequest {
 export interface LoginResponse {
   accessToken: string;
   user: {
-    id: string;
+    id: number | string;
     email: string;
-    name: string;
-    role: string;
+    role: { id: number; name: string } | string;
   };
 }
 
 export interface UserProfile {
-  id: string;
+  id: number | string;
   email: string;
   name?: string;
   fullName?: string;
-  role: string;
+  role: { id: number; name: string } | string;
   phone?: string;
   gender?: 'Nam' | 'Nữ' | 'Khác';
   dateOfBirth?: string;
@@ -125,6 +137,26 @@ export interface UserProfile {
 }
 
 export interface PermissionsResponse {
+  permissions: string[];
+}
+
+// /me aggregate response for patient
+export interface MeResponse {
+  id: number | string;
+  email: string;
+  phone?: string;
+  role: { id: number; name: string } | string;
+  staff: any | null;
+  patient: {
+    id: number;
+    fullName: string;
+    gender?: string;
+    birthYear?: number;
+    phone?: string;
+    address?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  } | null;
   permissions: string[];
 }
 
@@ -140,6 +172,11 @@ export const getProfile = async (): Promise<UserProfile> => {
 
 export const getMyPermissions = async (): Promise<PermissionsResponse> => {
   const response = await api.get<PermissionsResponse>('/auth/my-permissions');
+  return response.data;
+};
+
+export const getMe = async (): Promise<MeResponse> => {
+  const response = await api.get<MeResponse>('/me');
   return response.data;
 };
 

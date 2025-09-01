@@ -1,7 +1,7 @@
 import api, { ApiError } from './api';
 import { Appointment, AppointmentStatus } from '../types/appointments';
 
-export const USE_ME_ENDPOINTS = false;
+export const USE_ME_ENDPOINTS = true;
 
 export class OwnEndpointMissingError extends Error {
   code = 'OWN_ENDPOINT_MISSING' as const;
@@ -41,7 +41,7 @@ export async function listMyAppointments(
   }
 
   try {
-    const res = await api.get('/appointments', { params: query });
+    const res = await api.get('/appointments', { params: query, headers: { 'X-Suppress-401-Logout': '1' } });
     return normalizeListResponse(res.data);
   } catch (err) {
     const e = err as ApiError;
@@ -64,7 +64,12 @@ export async function createMyAppointment(body: CreateAppointmentBody): Promise<
   }
 
   try {
-    const res = await api.post('/appointments', body);
+    // Generic endpoint may require patientId per contract
+    const fallbackBody: any = { ...body };
+    if (typeof (fallbackBody as any).patientId === 'undefined') {
+      // If BE requires, you can pass patientId from profile cache later; for now let BE validate
+    }
+    const res = await api.post('/appointments', fallbackBody, { headers: { 'X-Suppress-401-Logout': '1' } });
     return res.data as Appointment;
   } catch (err) {
     const e = err as ApiError;
@@ -73,6 +78,21 @@ export async function createMyAppointment(body: CreateAppointmentBody): Promise<
     }
     throw e;
   }
+}
+
+export async function getMyAppointment(id: number | string): Promise<Appointment> {
+  const res = await api.get(`/me/appointments/${id}`);
+  return res.data as Appointment;
+}
+
+export async function rescheduleMyAppointment(id: number | string, body: { appointmentDate: string }): Promise<Appointment> {
+  const res = await api.patch(`/me/appointments/${id}/reschedule`, body);
+  return res.data as Appointment;
+}
+
+export async function cancelMyAppointment(id: number | string): Promise<Appointment> {
+  const res = await api.patch(`/me/appointments/${id}/cancel`);
+  return res.data as Appointment;
 }
 
 

@@ -115,14 +115,17 @@ The app handles errors in the expected backend format:
 
 ## UI State Management
 
-### Scaffold Screens Implementation
-All three "own" data screens (Appointments, Records, Invoices) include:
+### Patient Data Screens Implementation
+All patient "own" data screens (Appointments, Records, Invoices) include:
+- ✅ **Appointments**: Full CRUD implementation with filters, pagination, create modal
+- ✅ **Medical Records**: List/detail with attachments download and PDF export
+- ✅ **Invoices**: List/detail with patient/doctor info, prescriptions, PDF export
 - ✅ Loading skeleton/spinner with Vietnamese messages
-- ✅ Error state with retry functionality
+- ✅ Error state with retry functionality  
 - ✅ Empty state with appropriate icons and messages
-- ✅ Notice component warning about missing endpoints
-- ✅ Placeholder filter UI for future implementation
-- ✅ Demo buttons to toggle between different UI states
+- ✅ Notice component for API endpoint status
+- ✅ Advanced filtering (status, date) and pagination
+- ✅ Cross-module integration (Medical Record → Invoice lookup)
 
 ### Dark/Light Theme Support
 - ✅ NativeWind configured with `darkMode: 'class'`

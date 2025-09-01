@@ -36,6 +36,7 @@ export default function TabsLayout() {
           tabBarLabel: 'Lịch hẹn',
           headerTitle: 'Lịch hẹn của tôi',
           tabBarIcon: () => <Text style={{fontSize: 20}}>📅</Text>,
+          headerShown: false, // Let the stack handle headers
         }}
       />
       <Tabs.Screen
@@ -45,6 +46,7 @@ export default function TabsLayout() {
           tabBarLabel: 'Hồ sơ',
           headerTitle: 'Hồ sơ y tế',
           tabBarIcon: () => <Text style={{fontSize: 20}}>📋</Text>,
+          headerShown: false, // Let the stack handle headers
         }}
       />
       <Tabs.Screen
@@ -54,6 +56,7 @@ export default function TabsLayout() {
           tabBarLabel: 'Hoá đơn',
           headerTitle: 'Hoá đơn của tôi',
           tabBarIcon: () => <Text style={{fontSize: 20}}>💰</Text>,
+          headerShown: false, // Let the stack handle headers
         }}
       />
       <Tabs.Screen

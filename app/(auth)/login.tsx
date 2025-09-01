@@ -18,9 +18,9 @@ import { FormField } from '../../components/ui/FormField';
 import { Button } from '../../components/ui/Button';
 import { Notice } from '../../components/ui/Notice';
 import { authLogin, getProfile, getMyPermissions, ApiError } from '../../lib/api';
-import { MOCK_MODE, mockAuthLogin, mockGetProfile, mockGetMyPermissions } from '../../lib/mockApi';
 import { setToken } from '../../lib/auth';
 import { useToast } from '../../providers/ToastProvider';
+import { useSession } from '../../hooks/useSession';
 
 const loginSchema = z.object({
   email: z.string().email('Email không hợp lệ'),
@@ -33,6 +33,7 @@ export default function LoginScreen() {
   const [apiError, setApiError] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const { showToast } = useToast();
+  const { refreshAuth } = useSession();
 
   const {
     control,
@@ -52,40 +53,32 @@ export default function LoginScreen() {
       // Clear any previous errors
       setApiError(null);
 
-      // Use mock API if backend is not available
-      if (MOCK_MODE) {
-        // Step 1: Mock login and get token
-        const loginResponse = await mockAuthLogin(data);
-        
-        // Step 2: Store token
-        await setToken(loginResponse.accessToken);
-        
-        // Step 3: Fetch profile and permissions to ensure they're cached
-        const [profile, permissions] = await Promise.all([
-          mockGetProfile(),
-          mockGetMyPermissions(),
-        ]);
+      // Real API calls
+      const loginResponse = await authLogin(data);
+      await setToken(loginResponse.accessToken);
+      const [profile, permissions] = await Promise.all([
+        getProfile(),
+        getMyPermissions(),
+      ]);
 
-        return { loginResponse, profile, permissions };
-      } else {
-        // Real API calls
-        const loginResponse = await authLogin(data);
-        await setToken(loginResponse.accessToken);
-        const [profile, permissions] = await Promise.all([
-          getProfile(),
-          getMyPermissions(),
-        ]);
-
-        return { loginResponse, profile, permissions };
-      }
+      return { loginResponse, profile, permissions };
     },
-    onSuccess: ({ profile, permissions }) => {
+    onSuccess: async ({ profile, permissions }) => {
       // Cache the profile and permissions data
       queryClient.setQueryData(['auth','profile'], profile);
       queryClient.setQueryData(['auth','permissions'], permissions);
       
-      // Navigate to main app
-      router.replace('/(tabs)');
+      // Ensure token is fully persisted before refreshing auth state
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Ensure session state recognizes token immediately before navigation
+      const isAuthenticated = await refreshAuth();
+      
+      // Only navigate if auth state was successfully updated
+      if (isAuthenticated) {
+        // Use push to force navigation and clear any pending navigation
+        router.push('/(tabs)');
+      }
     },
     onError: (error: ApiError) => {
       console.error('Login error:', error);
@@ -156,14 +149,7 @@ export default function LoginScreen() {
             </Text>
           </View>
 
-          {MOCK_MODE && (
-            <Notice
-              type="info"
-              title="Demo Mode"
-              message="App đang chạy ở chế độ demo. Sử dụng: email: patient@test.com, password: test123"
-              style={{ marginBottom: 24 }}
-            />
-          )}
+
 
           {apiError && (
             <Notice

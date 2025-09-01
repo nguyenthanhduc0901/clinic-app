@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, ScrollView, RefreshControl, Modal } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, Modal, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Notice } from '../../../components/ui/Notice';
@@ -20,6 +20,7 @@ import { useToast } from '../../../providers/ToastProvider';
 import { OwnEndpointMissingError } from '../../../lib/appointments.client';
 import { ApiError } from '../../../lib/api';
 import { FormField } from '../../../components/ui/FormField';
+import { router } from 'expo-router';
 
 export default function AppointmentsScreen() {
   const { showToast } = useToast();
@@ -99,24 +100,6 @@ export default function AppointmentsScreen() {
     );
   }
 
-  if (showEmpty) {
-    return (
-      <EmptyState
-        title="Chưa có lịch hẹn"
-        message="Bạn chưa có lịch hẹn nào. Liên hệ phòng khám để đặt lịch hẹn."
-        icon={
-          <Text style={{ fontSize: 48 }}>📅</Text>
-        }
-        action={
-          <Button
-            title="Làm mới"
-            variant="outline"
-            onPress={toggleEmptyState}
-          />
-        }
-      />
-    );
-  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
@@ -185,16 +168,27 @@ export default function AppointmentsScreen() {
         ) : (
           <View style={{ gap: 8 }}>
             {data.map(item => (
-              <View key={item.id} style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8, padding: 12 }}>
+              <TouchableOpacity
+                key={item.id}
+                activeOpacity={0.7}
+                onPress={() => router.push(`/(tabs)/appointments/${String(item.id)}`)}
+                style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8, padding: 12 }}
+              >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>{item.appointmentDate}</Text>
                   <StatusBadge status={item.status} />
                 </View>
                 <Text style={{ color: '#6b7280', marginTop: 4 }}>Số thứ tự: {item.orderNumber}</Text>
+                <Text style={{ color: '#6b7280', marginTop: 2 }}>
+                  BN: {item.patient?.fullName || '—'} {item.patient?.phone ? `(${item.patient.phone})` : ''}
+                </Text>
+                <Text style={{ color: '#6b7280', marginTop: 2 }}>
+                  BS: {item.staff?.fullName || 'Chưa gán'}
+                </Text>
                 {item.notes ? (
                   <Text numberOfLines={2} style={{ color: '#6b7280', marginTop: 2 }}>{item.notes}</Text>
                 ) : null}
-              </View>
+              </TouchableOpacity>
             ))}
 
             <Paginator page={filters.page} total={total} limit={filters.limit} onChange={(p) => setFilters(prev => ({ ...prev, page: p }))} />

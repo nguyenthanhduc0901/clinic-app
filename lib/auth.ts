@@ -15,6 +15,7 @@ export const getToken = async (): Promise<string | null> => {
     const current = canUseSecureStore
       ? await SecureStore.getItemAsync(AUTH_TOKEN_KEY)
       : await AsyncStorage.getItem(AUTH_TOKEN_KEY);
+
     if (current) return current;
 
     // Attempt migration from any legacy keys
@@ -55,6 +56,7 @@ export const getToken = async (): Promise<string | null> => {
 export const setToken = async (token: string): Promise<void> => {
   try {
     const canUseSecureStore = Platform.OS !== 'web' && (await SecureStore.isAvailableAsync());
+    
     if (canUseSecureStore) {
       await SecureStore.setItemAsync(AUTH_TOKEN_KEY, token);
     } else {
