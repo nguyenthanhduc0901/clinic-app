@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ViewStyle } from 'react-native';
 import { Button } from './Button';
+import { theme } from '../../utils/theme';
 
 interface ErrorMessageProps {
   title?: string;
@@ -27,7 +28,7 @@ export function ErrorMessage({
       <Text style={{
         fontSize: 18,
         fontWeight: '600',
-        color: '#ef4444',
+        color: theme.colors.danger,
         textAlign: 'center',
         marginBottom: 8,
       }}>
@@ -36,7 +37,7 @@ export function ErrorMessage({
       
       <Text style={{
         fontSize: 16,
-        color: '#6b7280',
+        color: theme.colors.textMuted,
         textAlign: 'center',
         lineHeight: 24,
         marginBottom: 20,

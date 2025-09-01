@@ -8,6 +8,7 @@ import {
   TextStyle,
   StyleProp,
 } from 'react-native';
+import { theme } from '../../utils/theme';
 
 interface TextInputProps extends Omit<RNTextInputProps, 'style'> {
   label?: string;
@@ -43,7 +44,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     const labelStyles: TextStyle = {
       fontSize: 14,
       fontWeight: '500',
-      color: '#374151', // gray-700
+      color: '#374151',
       marginBottom: 6,
     };
 
@@ -51,9 +52,9 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
       flexDirection: 'row',
       alignItems: 'center',
       borderWidth: 1,
-      borderColor: hasError ? '#ef4444' : '#d1d5db', // danger-500 or gray-300
+      borderColor: hasError ? theme.colors.danger : theme.colors.borderMuted,
       borderRadius: 8,
-      backgroundColor: '#ffffff',
+      backgroundColor: theme.colors.bg,
       minHeight: 48,
       paddingHorizontal: 12,
     };
@@ -61,14 +62,14 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     const inputStyles: TextStyle = {
       flex: 1,
       fontSize: 16,
-      color: '#111827', // gray-900
+      color: theme.colors.text,
       paddingVertical: 12,
     };
 
     const helperTextStyles: TextStyle = {
       fontSize: 12,
       marginTop: 4,
-      color: hasError ? '#ef4444' : '#6b7280', // danger-500 or gray-500
+      color: hasError ? theme.colors.danger : theme.colors.textMuted,
     };
 
     const iconMargin = 8;
@@ -83,7 +84,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
           <RNTextInput
             ref={ref}
             style={[inputStyles, style]}
-            placeholderTextColor="#9ca3af" // gray-400
+            placeholderTextColor="#9ca3af"
             {...props}
           />
           

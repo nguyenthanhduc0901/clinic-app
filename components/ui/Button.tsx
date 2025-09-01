@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { theme } from '../../utils/theme';
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
@@ -55,18 +56,18 @@ export function Button({
     // Variant styles
     switch (variant) {
       case 'secondary':
-        baseStyle.backgroundColor = '#f1f5f9'; // secondary-100
+        baseStyle.backgroundColor = theme.colors.bgMuted;
         break;
       case 'outline':
         baseStyle.backgroundColor = 'transparent';
         baseStyle.borderWidth = 1;
-        baseStyle.borderColor = '#0ea5e9'; // primary-500
+        baseStyle.borderColor = theme.colors.primary;
         break;
       case 'danger':
-        baseStyle.backgroundColor = '#ef4444'; // danger-500
+        baseStyle.backgroundColor = theme.colors.danger;
         break;
       default: // primary
-        baseStyle.backgroundColor = '#0ea5e9'; // primary-500
+        baseStyle.backgroundColor = theme.colors.primary;
     }
 
     // Disabled state
@@ -98,10 +99,10 @@ export function Button({
     // Variant styles
     switch (variant) {
       case 'secondary':
-        baseStyle.color = '#334155'; // secondary-700
+        baseStyle.color = '#334155';
         break;
       case 'outline':
-        baseStyle.color = '#0ea5e9'; // primary-500
+        baseStyle.color = theme.colors.primary;
         break;
       default: // primary, danger
         baseStyle.color = '#ffffff';
@@ -121,7 +122,7 @@ export function Button({
       {loading ? (
         <ActivityIndicator
           size={size === 'sm' ? 'small' : 'small'}
-          color={variant === 'outline' || variant === 'secondary' ? '#0ea5e9' : '#ffffff'}
+          color={variant === 'outline' || variant === 'secondary' ? theme.colors.primary : '#ffffff'}
         />
       ) : (
         <>

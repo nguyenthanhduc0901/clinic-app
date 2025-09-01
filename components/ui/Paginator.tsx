@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { theme } from '../../utils/theme';
 
 interface PaginatorProps {
   page: number;
@@ -16,19 +17,19 @@ export function Paginator({ page, total, limit, onChange }: PaginatorProps) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 16 }}>
       <TouchableOpacity
-        style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, backgroundColor: canPrev ? '#0ea5e9' : '#d1d5db' }}
+        style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, backgroundColor: canPrev ? theme.colors.primary : theme.colors.borderMuted }}
         disabled={!canPrev}
         onPress={() => onChange(page - 1)}
       >
         <Text style={{ color: '#ffffff', fontWeight: '600' }}>Trước</Text>
       </TouchableOpacity>
 
-      <Text style={{ color: '#374151' }}>
+      <Text style={{ color: theme.colors.text }}>
         Trang {page}/{totalPages}
       </Text>
 
       <TouchableOpacity
-        style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, backgroundColor: canNext ? '#0ea5e9' : '#d1d5db' }}
+        style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, backgroundColor: canNext ? theme.colors.primary : theme.colors.borderMuted }}
         disabled={!canNext}
         onPress={() => onChange(page + 1)}
       >

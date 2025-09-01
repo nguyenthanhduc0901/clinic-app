@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { theme } from '../../utils/theme';
 import { InvoiceStatus } from '../../types/invoices';
 
 const statusMap: Record<InvoiceStatus, { bg: string; text: string; label: string }> = {
-  [InvoiceStatus.PENDING]: { bg: '#fef3c7', text: '#b45309', label: 'Chờ thanh toán' },
-  [InvoiceStatus.PAID]: { bg: '#dcfce7', text: '#15803d', label: 'Đã thanh toán' },
-  [InvoiceStatus.CANCELLED]: { bg: '#fee2e2', text: '#b91c1c', label: 'Đã hủy' },
+  [InvoiceStatus.PENDING]: { bg: theme.colors.warningBg, text: theme.colors.warning, label: 'Chờ thanh toán' },
+  [InvoiceStatus.PAID]: { bg: theme.colors.successBg, text: theme.colors.success, label: 'Đã thanh toán' },
+  [InvoiceStatus.CANCELLED]: { bg: theme.colors.dangerBg, text: theme.colors.danger, label: 'Đã hủy' },
   [InvoiceStatus.REFUNDED]: { bg: '#ede9fe', text: '#6d28d9', label: 'Đã hoàn tiền' },
 };
 

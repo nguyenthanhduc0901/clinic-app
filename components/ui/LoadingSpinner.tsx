@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, Text, ViewStyle } from 'react-native';
+import { theme } from '../../utils/theme';
 
 interface LoadingSpinnerProps {
   message?: string;
@@ -19,12 +20,12 @@ export function LoadingSpinner({
       alignItems: 'center',
       padding: 20,
     }, style]}>
-      <ActivityIndicator size={size} color="#0ea5e9" />
+      <ActivityIndicator size={size} color={theme.colors.primary} />
       {message && (
         <Text style={{
           marginTop: 12,
           fontSize: 16,
-          color: '#6b7280',
+          color: theme.colors.textMuted,
           textAlign: 'center',
         }}>
           {message}

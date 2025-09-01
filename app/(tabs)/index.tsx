@@ -101,7 +101,6 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );

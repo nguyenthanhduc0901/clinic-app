@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
+import { theme } from '../../utils/theme';
 
 interface NoticeProps {
   type?: 'info' | 'warning' | 'error' | 'success';
@@ -10,10 +11,10 @@ interface NoticeProps {
 
 export function Notice({ type = 'info', title, message, style }: NoticeProps) {
   const colorMap = {
-    info: { bg: '#e0f2fe', text: '#0c4a6e', icon: 'ℹ️' },
-    warning: { bg: '#fef3c7', text: '#78350f', icon: '⚠️' },
-    error: { bg: '#fee2e2', text: '#7f1d1d', icon: '⛔' },
-    success: { bg: '#dcfce7', text: '#14532d', icon: '✅' },
+    info: { bg: theme.colors.primaryLight, text: '#0c4a6e', icon: 'ℹ️' },
+    warning: { bg: theme.colors.warningBg, text: '#78350f', icon: '⚠️' },
+    error: { bg: theme.colors.dangerBg, text: '#7f1d1d', icon: '⛔' },
+    success: { bg: theme.colors.successBg, text: '#14532d', icon: '✅' },
   } as const;
 
   const colors = colorMap[type];
