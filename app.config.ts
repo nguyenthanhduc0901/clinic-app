@@ -11,7 +11,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   scheme: 'clinic-patient',
   splash: {
-    image: './assets/splash-icon.png',
+    image: './assets/banner.png',
     resizeMode: 'contain',
     backgroundColor: '#ffffff',
   },
@@ -20,13 +20,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage: './assets/icon.png',
       backgroundColor: '#ffffff',
     },
     edgeToEdgeEnabled: true,
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/favicon.ico',
     bundler: 'metro',
   },
   plugins: [
